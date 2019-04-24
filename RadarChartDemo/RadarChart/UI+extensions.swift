@@ -14,3 +14,11 @@ extension UIColor {
         return UIColor(displayP3Red: 219 / 255, green: 221 / 255, blue: 220 / 255, alpha: 1.0)
     }
 }
+
+extension UIImageView {
+    func setImageColor(color: UIColor) {
+        let templateImage = image?.withRenderingMode(.alwaysTemplate)
+        image = templateImage
+        tintColor = color
+    }
+}

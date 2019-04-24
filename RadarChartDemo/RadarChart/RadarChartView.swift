@@ -17,14 +17,14 @@ enum SectionLayout {
 class RadarChartView: UIView {
 
     private var models: [RadarChartSectionModel] = []
-    private var sectionLayout: SectionLayout = .horizontalAlign
+    private var sectionLayout: SectionLayout = .even
     private var sectionGrayColor: CGColor = UIColor.radarChartGray.cgColor
     private var verticalMargin: CGFloat = 6
     private var marginAngle = 10 * CGFloat.pi / 180
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = UIColor.red
+//        backgroundColor = UIColor.red
     }
 
     override func draw(_ rect: CGRect) {
@@ -32,7 +32,7 @@ class RadarChartView: UIView {
     }
 
     func configure(with models: [RadarChartSectionModel],
-                   sectionLayout: SectionLayout = .horizontalAlign,
+                   sectionLayout: SectionLayout = .even,
                    sectionDefaultColor: UIColor = UIColor.radarChartGray,
                    verticalMargin: CGFloat = 6,
                    marginAngle: CGFloat = 10 * CGFloat.pi / 180
@@ -64,14 +64,14 @@ class RadarChartView: UIView {
         for i in 1...models.count / 2 {
             let startAngle = CGFloat(i - 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1], arcCenter: arcCenterBelow, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1], arcCenter: arcCenterBelow, startAngle: startAngle, endAngle: endAngle)
         }
 
         // sections above
         for i in 1...models.count / 2 {
             let startAngle = degree2angle(180) + CGFloat(i - 1) * (deltaAngle + marginAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, startAngle: startAngle, endAngle: endAngle)
         }
     }
 
@@ -84,25 +84,42 @@ class RadarChartView: UIView {
         for i in 1...models.count {
             let startAngle = marginAngle / 2 + CGFloat(i + 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1], arcCenter: arcCenter, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1], arcCenter: arcCenter, startAngle: startAngle, endAngle: endAngle)
         }
     }
 
-    private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, sectionColor: CGColor, startAngle: CGFloat, endAngle: CGFloat) {
+    private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, startAngle: CGFloat, endAngle: CGFloat) {
         let initRadius: CGFloat = 20
         let lineWidth: CGFloat = 10
         let lineMargin: CGFloat = 4
 
+        print("===================================")
         for i in 1...model.maximumValue {
             let radiusForLine = initRadius + (lineWidth + lineMargin) * CGFloat(i - 1)
+            print("radiusForLine: \(radiusForLine)")
             let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radiusForLine, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = circlePath.cgPath
             shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.strokeColor = i <= model.currentValue ? sectionColor : sectionGrayColor
+            shapeLayer.strokeColor = i <= model.currentValue ? model.sectionColor.cgColor : sectionGrayColor
             shapeLayer.lineWidth = lineWidth
             layer.addSublayer(shapeLayer)
         }
+
+        // put icon
+        let icon = UIImageView(image: UIImage(named: model.iconName))
+        icon.setImageColor(color:model.sectionColor)
+        let angle = (startAngle + endAngle) / 2
+        let radius = (initRadius + (lineWidth + lineMargin) * CGFloat(model.maximumValue - 1)) + 2 * lineWidth
+        let iconCenter = CGPoint(x: arcCenter.x + cos(angle) * radius, y: arcCenter.y + radius * sin(angle))
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(icon)
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 20),
+            icon.heightAnchor.constraint(equalToConstant: 20),
+            icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
+            icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
+        print("radius for icon: \(radius)")
     }
 
     private func degree2angle(_ degree: CGFloat) -> CGFloat {
