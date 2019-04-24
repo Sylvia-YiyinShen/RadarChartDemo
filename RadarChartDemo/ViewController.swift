@@ -14,7 +14,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        radarChartView.numOfSections = 10
+        configureRadarChart()
+    }
+
+    private func configureRadarChart() {
+        radarChartView.configure(with: radarChartModels)
+    }
+
+    private var radarChartModels: [RadarChartSectionModel] {
+        return [
+            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 10, maximumValue: 10, sectionColor: UIColor.orange),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange)
+        ]
     }
 }
 

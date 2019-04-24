@@ -14,6 +14,7 @@
 		D9686BBD226FD3F300BCCEA9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9686BBB226FD3F300BCCEA9 /* LaunchScreen.storyboard */; };
 		D9686BC6226FD46C00BCCEA9 /* RadarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */; };
 		D9686BC8226FD52E00BCCEA9 /* RadarChartSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */; };
+		D9686BCA226FECC000BCCEA9 /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC9226FECC000BCCEA9 /* UIColor+extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		D9686BBE226FD3F300BCCEA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartView.swift; sourceTree = "<group>"; };
 		D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartSectionModel.swift; sourceTree = "<group>"; };
+		D9686BC9226FECC000BCCEA9 /* UIColor+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			children = (
 				D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */,
 				D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */,
+				D9686BC9226FECC000BCCEA9 /* UIColor+extension.swift */,
 			);
 			path = RadarChart;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 			files = (
 				D9686BB5226FD3F100BCCEA9 /* ViewController.swift in Sources */,
 				D9686BC8226FD52E00BCCEA9 /* RadarChartSectionModel.swift in Sources */,
+				D9686BCA226FECC000BCCEA9 /* UIColor+extension.swift in Sources */,
 				D9686BC6226FD46C00BCCEA9 /* RadarChartView.swift in Sources */,
 				D9686BB3226FD3F100BCCEA9 /* AppDelegate.swift in Sources */,
 			);

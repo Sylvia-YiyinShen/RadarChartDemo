@@ -15,18 +15,33 @@ enum SectionLayout {
 }
 
 class RadarChartView: UIView {
-    var sectionGrayColor = UIColor(displayP3Red: 219 / 255, green: 221 / 255, blue: 220 / 255, alpha: 1.0).cgColor
-    var numOfSections = 10
-    var marginAngle = 10 * CGFloat.pi / 180
-    var verticalMargin: CGFloat = 6
-    var sectionLayout: SectionLayout = .horizontalAlign
+
+    private var models: [RadarChartSectionModel] = []
+    private var sectionLayout: SectionLayout = .horizontalAlign
+    private var sectionGrayColor: CGColor = UIColor.radarChartGray.cgColor
+    private var verticalMargin: CGFloat = 6
+    private var marginAngle = 10 * CGFloat.pi / 180
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        backgroundColor = UIColor.red
     }
 
     override func draw(_ rect: CGRect) {
         drawSections()
+    }
+
+    func configure(with models: [RadarChartSectionModel],
+                   sectionLayout: SectionLayout = .horizontalAlign,
+                   sectionDefaultColor: UIColor = UIColor.radarChartGray,
+                   verticalMargin: CGFloat = 6,
+                   marginAngle: CGFloat = 10 * CGFloat.pi / 180
+                   ) {
+        self.models = models
+        self.sectionLayout = sectionLayout
+        self.sectionGrayColor = sectionDefaultColor.cgColor
+        self.verticalMargin = verticalMargin
+        self.marginAngle = marginAngle
     }
 
     private func drawSections() {
@@ -39,55 +54,52 @@ class RadarChartView: UIView {
     }
 
     private func drawSectionsForHorizontalAlignLayout() {
+        guard models.count != 0 else { return }
+
         let arcCenterAbove = CGPoint(x: bounds.width / 2, y: bounds.height / 2 - verticalMargin / 2)
         let arcCenterBelow = CGPoint(x: bounds.width / 2, y: bounds.height / 2 + verticalMargin / 2)
-        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections - 2) * marginAngle)) / CGFloat(numOfSections)
+        let deltaAngle = (degree2angle(360) - (CGFloat(models.count - 2) * marginAngle)) / CGFloat(models.count)
+
         // sections below
-        for i in 1...numOfSections / 2 {
+        for i in 1...models.count / 2 {
             let startAngle = CGFloat(i - 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(arcCenter: arcCenterBelow, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1], arcCenter: arcCenterBelow, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
         }
 
         // sections above
-        for i in 1...numOfSections / 2 {
+        for i in 1...models.count / 2 {
             let startAngle = degree2angle(180) + CGFloat(i - 1) * (deltaAngle + marginAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(arcCenter: arcCenterAbove, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
         }
-
     }
 
     private func drawSectionsForEvenLayout() {
-        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections) * marginAngle)) / CGFloat(numOfSections)
+        guard models.count != 0 else { return }
+
+        let deltaAngle = (degree2angle(360) - (CGFloat(models.count) * marginAngle)) / CGFloat(models.count)
         let arcCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
 
-        for i in 1...numOfSections {
+        for i in 1...models.count {
             let startAngle = marginAngle / 2 + CGFloat(i + 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(arcCenter: arcCenter, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
+            drawSection(model: models[i - 1], arcCenter: arcCenter, sectionColor: UIColor.orange.cgColor, startAngle: startAngle, endAngle: endAngle)
         }
     }
 
-    private func drawSection(arcCenter: CGPoint, sectionColor: CGColor, startAngle: CGFloat, endAngle: CGFloat) {
-        drawLinesInSection(arcCenter: arcCenter, sectionColor: sectionColor, startAngle: startAngle, endAngle: endAngle)
-    }
-
-    private func drawLinesInSection(arcCenter: CGPoint, sectionColor: CGColor, startAngle: CGFloat, endAngle: CGFloat) {
+    private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, sectionColor: CGColor, startAngle: CGFloat, endAngle: CGFloat) {
         let initRadius: CGFloat = 20
-        let lineWidth: CGFloat = 8
+        let lineWidth: CGFloat = 10
         let lineMargin: CGFloat = 4
 
-        let maxValue = 10
-        let curValue = 8
-
-        for i in 1...maxValue {
+        for i in 1...model.maximumValue {
             let radiusForLine = initRadius + (lineWidth + lineMargin) * CGFloat(i - 1)
             let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radiusForLine, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = circlePath.cgPath
             shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.strokeColor = i <= curValue ? sectionColor : sectionGrayColor
+            shapeLayer.strokeColor = i <= model.currentValue ? sectionColor : sectionGrayColor
             shapeLayer.lineWidth = lineWidth
             layer.addSublayer(shapeLayer)
         }

@@ -7,10 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 struct RadarChartSectionModel {
-    var sectionValue: Int
-    var iconName: String
-    var sectionName: String
-    var sectionDescription: String
+    var currentValue: Int
+    var maximumValue: Int
+    var sectionColor: UIColor
+//    var iconName: String
+//    var sectionName: String
+//    var sectionDescription: String
 }
