@@ -19,23 +19,34 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="60y-RP-d7A" customClass="RadarChartView" customModule="RadarChartDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="146" width="375" height="375"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="375"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="60y-RP-d7A" secondAttribute="height" multiplier="1:1" id="2xV-6p-Hmw"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1O9-kv-38t" customClass="RadarChartView" customModule="RadarChartDemo" customModuleProvider="target">
+                                <rect key="frame" x="56.5" y="405" width="262" height="262"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="1O9-kv-38t" secondAttribute="height" multiplier="1:1" id="UNd-ix-bl9"/>
+                                </constraints>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="60y-RP-d7A" secondAttribute="trailing" id="MK0-oT-rda"/>
-                            <constraint firstItem="60y-RP-d7A" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YjV-JB-sFe"/>
+                            <constraint firstItem="1O9-kv-38t" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="N6u-zx-svV"/>
+                            <constraint firstItem="1O9-kv-38t" firstAttribute="top" secondItem="60y-RP-d7A" secondAttribute="bottom" constant="10" id="ase-ws-J3c"/>
+                            <constraint firstItem="60y-RP-d7A" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="dtm-rl-zyA"/>
                             <constraint firstItem="60y-RP-d7A" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fnw-IK-c7D"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1O9-kv-38t" secondAttribute="bottom" id="kWU-tl-88t"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="radarChartView" destination="60y-RP-d7A" id="NcX-6X-Wwi"/>
+                        <outlet property="smallRadarChartView" destination="1O9-kv-38t" id="WFw-I6-g8K"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

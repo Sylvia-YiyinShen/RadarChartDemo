@@ -80,7 +80,7 @@ class RadarChartView: UIView {
     }
 
     private func drawBorderForHorizontalAlignLayout(arcCenterAbove: CGPoint, arcCenterBelow: CGPoint) {
-        let radius = bounds.width - borderWidth
+        let radius = (bounds.width - borderWidth) / CGFloat(2)
 
         // border above
         let circlePathAbove = UIBezierPath(arcCenter: arcCenterAbove, radius: radius, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 2, clockwise: true)
