@@ -18,7 +18,10 @@ class ViewController: UIViewController {
     }
 
     private func configureRadarChart() {
-        radarChartView.configure(with: radarChartModels)
+        radarChartView.configure(with: radarChartModels,
+                                 borderColor: UIColor.radarChartRed,
+                                 borderAboveColor: UIColor.orange,
+                                 borderBelowColor: UIColor.radarChartRed)
     }
 
     private var radarChartModels: [RadarChartSectionModel] {

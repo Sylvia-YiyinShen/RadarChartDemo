@@ -13,6 +13,10 @@ extension UIColor {
     static var radarChartGray: UIColor {
         return UIColor(displayP3Red: 219 / 255, green: 221 / 255, blue: 220 / 255, alpha: 1.0)
     }
+
+    static var radarChartRed: UIColor {
+        return UIColor(displayP3Red: 139 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1.0)
+    }
 }
 
 extension UIImageView {

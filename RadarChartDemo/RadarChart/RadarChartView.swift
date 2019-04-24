@@ -19,8 +19,14 @@ class RadarChartView: UIView {
     private var models: [RadarChartSectionModel] = []
     private var sectionLayout: SectionLayout = .even
     private var sectionGrayColor: CGColor = UIColor.radarChartGray.cgColor
-    private var verticalMargin: CGFloat = 6
-    private var marginAngle = 10 * CGFloat.pi / 180
+    private var verticalMargin: CGFloat = 0
+    private var marginAngle: CGFloat = 0 
+
+    private var borderColor: CGColor = UIColor.radarChartGray.cgColor
+    private var borderAboveColor: CGColor = UIColor.radarChartGray.cgColor
+    private var borderBelowColor: CGColor = UIColor.radarChartGray.cgColor
+    private var borderEnabled: Bool = true
+    private var borderWidth: CGFloat = 0
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,14 +40,23 @@ class RadarChartView: UIView {
     func configure(with models: [RadarChartSectionModel],
                    sectionLayout: SectionLayout = .even,
                    sectionDefaultColor: UIColor = UIColor.radarChartGray,
-                   verticalMargin: CGFloat = 6,
-                   marginAngle: CGFloat = 10 * CGFloat.pi / 180
+                   verticalMargin: CGFloat? = nil,
+                   marginAngle: CGFloat? = nil,
+                   borderEnabled: Bool = true,
+                   borderWidth: CGFloat? = nil,
+                   borderColor: UIColor? = nil,
+                   borderAboveColor: UIColor? = nil,
+                   borderBelowColor: UIColor? = nil
                    ) {
         self.models = models
         self.sectionLayout = sectionLayout
         self.sectionGrayColor = sectionDefaultColor.cgColor
-        self.verticalMargin = verticalMargin
-        self.marginAngle = marginAngle
+        self.verticalMargin = verticalMargin ?? 6
+        self.marginAngle = marginAngle ?? 8 * CGFloat.pi / 180
+        self.borderWidth = borderWidth ?? 10
+        self.borderColor = borderColor?.cgColor ?? UIColor.radarChartGray.cgColor
+        self.borderAboveColor = borderAboveColor?.cgColor ?? UIColor.radarChartGray.cgColor
+        self.borderBelowColor = borderBelowColor?.cgColor ?? UIColor.radarChartGray.cgColor
     }
 
     private func drawSections() {
@@ -51,6 +66,40 @@ class RadarChartView: UIView {
         case .horizontalAlign:
             drawSectionsForHorizontalAlignLayout()
         }
+    }
+
+    private func drawBorderForEvenLayout() {
+        let radius = (bounds.width - borderWidth) / CGFloat(2)
+        let arcCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
+        let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radius, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = borderColor
+        shapeLayer.lineWidth = borderWidth
+        layer.addSublayer(shapeLayer)
+    }
+
+    private func drawBorderForHorizontalAlignLayout(arcCenterAbove: CGPoint, arcCenterBelow: CGPoint) {
+        let radius = bounds.width - borderWidth
+
+        // border above
+        let circlePathAbove = UIBezierPath(arcCenter: arcCenterAbove, radius: radius, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 2, clockwise: true)
+        let shapeLayerAbove = CAShapeLayer()
+        shapeLayerAbove.path = circlePathAbove.cgPath
+        shapeLayerAbove.fillColor = UIColor.clear.cgColor
+        shapeLayerAbove.strokeColor = borderAboveColor
+        shapeLayerAbove.lineWidth = borderWidth
+        layer.addSublayer(shapeLayerAbove)
+
+        // border below
+        let circlePathBelow = UIBezierPath(arcCenter: arcCenterBelow, radius: radius, startAngle: 0, endAngle: CGFloat.pi, clockwise: true)
+        let shapeLayerBelow = CAShapeLayer()
+        shapeLayerBelow.path = circlePathBelow.cgPath
+        shapeLayerBelow.fillColor = UIColor.clear.cgColor
+        shapeLayerBelow.strokeColor = borderBelowColor
+        shapeLayerBelow.lineWidth = borderWidth
+        layer.addSublayer(shapeLayerBelow)
     }
 
     private func drawSectionsForHorizontalAlignLayout() {
@@ -73,6 +122,10 @@ class RadarChartView: UIView {
             let endAngle = startAngle + deltaAngle
             drawSection(model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, startAngle: startAngle, endAngle: endAngle)
         }
+
+        if borderEnabled {
+            drawBorderForHorizontalAlignLayout(arcCenterAbove: arcCenterAbove, arcCenterBelow: arcCenterBelow)
+        }
     }
 
     private func drawSectionsForEvenLayout() {
@@ -86,17 +139,20 @@ class RadarChartView: UIView {
             let endAngle = startAngle + deltaAngle
             drawSection(model: models[i - 1], arcCenter: arcCenter, startAngle: startAngle, endAngle: endAngle)
         }
+
+        if borderEnabled {
+            drawBorderForEvenLayout()
+        }
     }
 
     private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, startAngle: CGFloat, endAngle: CGFloat) {
+
         let initRadius: CGFloat = 20
         let lineWidth: CGFloat = 10
         let lineMargin: CGFloat = 4
 
-        print("===================================")
         for i in 1...model.maximumValue {
             let radiusForLine = initRadius + (lineWidth + lineMargin) * CGFloat(i - 1)
-            print("radiusForLine: \(radiusForLine)")
             let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radiusForLine, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = circlePath.cgPath
@@ -109,6 +165,8 @@ class RadarChartView: UIView {
         // put icon
         let icon = UIImageView(image: UIImage(named: model.iconName))
         icon.setImageColor(color:model.sectionColor)
+        icon.backgroundColor = UIColor.black
+        icon.contentMode = .scaleAspectFill
         let angle = (startAngle + endAngle) / 2
         let radius = (initRadius + (lineWidth + lineMargin) * CGFloat(model.maximumValue - 1)) + 2 * lineWidth
         let iconCenter = CGPoint(x: arcCenter.x + cos(angle) * radius, y: arcCenter.y + radius * sin(angle))
@@ -119,7 +177,6 @@ class RadarChartView: UIView {
             icon.heightAnchor.constraint(equalToConstant: 20),
             icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
             icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
-        print("radius for icon: \(radius)")
     }
 
     private func degree2angle(_ degree: CGFloat) -> CGFloat {
