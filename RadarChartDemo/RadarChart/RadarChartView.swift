@@ -27,13 +27,7 @@ class RadarChartView: UIView {
     private var borderBelowColor: CGColor = UIColor.radarChartGray.cgColor
     private var borderEnabled: Bool = true
     private var borderWidth: CGFloat = 0
-
-    private var iconLength: CGFloat = 25
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-//        backgroundColor = UIColor.red
-    }
+    private var iconLength: CGFloat = 0
 
     override func draw(_ rect: CGRect) {
         drawSections()
@@ -54,14 +48,14 @@ class RadarChartView: UIView {
         self.models = models
         self.sectionLayout = sectionLayout
         self.sectionGrayColor = sectionDefaultColor.cgColor
-        self.verticalMargin = verticalMargin ?? 6
+        self.verticalMargin = verticalMargin ?? 6 * bounds.width / 375
         self.marginAngle = marginAngle ?? 8 * CGFloat.pi / 180
-        self.borderWidth = borderWidth ?? 10
+        self.borderWidth = borderWidth ?? 12 * bounds.width / 375
         self.borderColor = borderColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderAboveColor = borderAboveColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderBelowColor = borderBelowColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderEnabled = borderEnabled
-        self.iconLength = iconLength ?? 25
+        self.iconLength = iconLength ?? 25 * bounds.width / 375
     }
 
     private func drawSections() {
@@ -152,12 +146,29 @@ class RadarChartView: UIView {
 
     private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, startAngle: CGFloat, endAngle: CGFloat) {
 
-        let initRadius: CGFloat = 20
-        let lineWidth: CGFloat = 10
-        let lineMargin: CGFloat = 4
+        let icon = UIImageView(image: UIImage(named: model.iconName))
+        icon.setImageColor(color:model.sectionColor)
+        icon.contentMode = .scaleAspectFill
+        let angle = (startAngle + endAngle) / 2
+        let iconRadius = borderEnabled ? (bounds.width) / 2 - borderWidth - iconLength * sqrt(2) / 2 : bounds.width / 2 - iconLength * sqrt(2) / 2
+        let iconCenter = CGPoint(x: arcCenter.x + cos(angle) * iconRadius, y: arcCenter.y + iconRadius * sin(angle))
+        icon.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(icon)
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: iconLength),
+            icon.heightAnchor.constraint(equalToConstant: iconLength),
+            icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
+            icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
+
+
+        let maxRadius: CGFloat = iconRadius - iconLength * sqrt(2) / 3
+        let minRadius: CGFloat = 25 * bounds.width / 375
+        let marginWidthRate: CGFloat = 0.4
+        let lineWidth: CGFloat = (maxRadius - minRadius) / CGFloat(model.maximumValue) / (CGFloat(1) + marginWidthRate)
+        let lineMargin: CGFloat = marginWidthRate * lineWidth
 
         for i in 1...model.maximumValue {
-            let radiusForLine = initRadius + (lineWidth + lineMargin) * CGFloat(i - 1)
+            let radiusForLine = minRadius + (lineWidth + lineMargin) * CGFloat(i - 1)
             let circlePath = UIBezierPath(arcCenter: arcCenter, radius: radiusForLine, startAngle: startAngle, endAngle: endAngle, clockwise: true)
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = circlePath.cgPath
@@ -166,22 +177,6 @@ class RadarChartView: UIView {
             shapeLayer.lineWidth = lineWidth
             layer.addSublayer(shapeLayer)
         }
-
-        // put icon
-        let icon = UIImageView(image: UIImage(named: model.iconName))
-        icon.setImageColor(color:model.sectionColor)
-//        icon.backgroundColor = UIColor.black
-        icon.contentMode = .scaleAspectFill
-        let angle = (startAngle + endAngle) / 2
-        let radius = borderEnabled ? (bounds.width) / 2 - borderWidth - iconLength * sqrt(2) / 2 : bounds.width / 2 - iconLength * sqrt(2) / 2
-        let iconCenter = CGPoint(x: arcCenter.x + cos(angle) * radius, y: arcCenter.y + radius * sin(angle))
-        icon.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(icon)
-        NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: iconLength),
-            icon.heightAnchor.constraint(equalToConstant: iconLength),
-            icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
-            icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
     }
 
     private func degree2angle(_ degree: CGFloat) -> CGFloat {

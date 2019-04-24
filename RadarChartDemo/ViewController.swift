@@ -20,7 +20,6 @@ class ViewController: UIViewController {
     private func configureRadarChart() {
         radarChartView.configure(with: radarChartModels,
                                  borderEnabled: true,
-                                 borderWidth: 15,
                                  borderColor: UIColor.orange,
                                  borderAboveColor: UIColor.orange,
                                  borderBelowColor: UIColor.radarChartRed)
