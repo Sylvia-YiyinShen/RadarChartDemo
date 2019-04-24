@@ -28,6 +28,8 @@ class RadarChartView: UIView {
     private var borderEnabled: Bool = true
     private var borderWidth: CGFloat = 0
 
+    private var iconLength: CGFloat = 25
+
     override func awakeFromNib() {
         super.awakeFromNib()
 //        backgroundColor = UIColor.red
@@ -46,7 +48,8 @@ class RadarChartView: UIView {
                    borderWidth: CGFloat? = nil,
                    borderColor: UIColor? = nil,
                    borderAboveColor: UIColor? = nil,
-                   borderBelowColor: UIColor? = nil
+                   borderBelowColor: UIColor? = nil,
+                   iconLength: CGFloat? = nil
                    ) {
         self.models = models
         self.sectionLayout = sectionLayout
@@ -57,6 +60,8 @@ class RadarChartView: UIView {
         self.borderColor = borderColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderAboveColor = borderAboveColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderBelowColor = borderBelowColor?.cgColor ?? UIColor.radarChartGray.cgColor
+        self.borderEnabled = borderEnabled
+        self.iconLength = iconLength ?? 25
     }
 
     private func drawSections() {
@@ -165,16 +170,16 @@ class RadarChartView: UIView {
         // put icon
         let icon = UIImageView(image: UIImage(named: model.iconName))
         icon.setImageColor(color:model.sectionColor)
-        icon.backgroundColor = UIColor.black
+//        icon.backgroundColor = UIColor.black
         icon.contentMode = .scaleAspectFill
         let angle = (startAngle + endAngle) / 2
-        let radius = (initRadius + (lineWidth + lineMargin) * CGFloat(model.maximumValue - 1)) + 2 * lineWidth
+        let radius = borderEnabled ? (bounds.width) / 2 - borderWidth - iconLength * sqrt(2) / 2 : bounds.width / 2 - iconLength * sqrt(2) / 2
         let iconCenter = CGPoint(x: arcCenter.x + cos(angle) * radius, y: arcCenter.y + radius * sin(angle))
         icon.translatesAutoresizingMaskIntoConstraints = false
         addSubview(icon)
         NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: 20),
-            icon.heightAnchor.constraint(equalToConstant: 20),
+            icon.widthAnchor.constraint(equalToConstant: iconLength),
+            icon.heightAnchor.constraint(equalToConstant: iconLength),
             icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
             icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
     }
