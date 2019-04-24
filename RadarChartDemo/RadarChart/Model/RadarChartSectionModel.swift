@@ -14,6 +14,5 @@ struct RadarChartSectionModel {
     var maximumValue: Int
     var sectionColor: UIColor
     var iconName: String
-//    var sectionName: String
-//    var sectionDescription: String
+    var sectionName: String
 }

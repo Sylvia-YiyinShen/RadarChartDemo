@@ -29,8 +29,11 @@ class RadarChartView: UIView {
     private var borderWidth: CGFloat = 0
     private var iconLength: CGFloat = 0
 
+    private var tooltipView: TooltipView?
+
     override func draw(_ rect: CGRect) {
         drawSections()
+        configureTooltipView()
     }
 
     func configure(with models: [RadarChartSectionModel],
@@ -56,6 +59,46 @@ class RadarChartView: UIView {
         self.borderBelowColor = borderBelowColor?.cgColor ?? UIColor.radarChartGray.cgColor
         self.borderEnabled = borderEnabled
         self.iconLength = iconLength ?? 25 * bounds.width / 375
+    }
+
+    private func configureTooltipView() {
+        tooltipView = TooltipView.loadFromNib()
+        tooltipView?.isHidden = true
+        tooltipView?.layer.cornerRadius = 4
+        tooltipView?.layer.borderWidth = 1
+        tooltipView?.layer.borderColor = UIColor.radarChartGray.cgColor
+        tooltipView?.backgroundColor = UIColor.white
+        addSubview(tooltipView!)
+
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView(recognizer:))))
+    }
+
+    @objc private func didTapView(recognizer: UITapGestureRecognizer) {
+        tooltipView?.isHidden = true
+    }
+
+    @objc private func didTapOnIcon(recognizer: UITapGestureRecognizer) {
+        guard let section = recognizer.view?.tag else { return }
+        
+        let center = bounds.width / 2
+        let tapPoint = recognizer.location(in: self)
+        let size = tooltipView?.bounds.size ?? CGSize.zero
+        var tipPointX: CGFloat = 0
+        var tipPointY: CGFloat = 0
+        if tapPoint.x <= center {
+            tipPointX = tapPoint.x
+        } else {
+            tipPointX = tapPoint.x - size.width
+        }
+
+        if tapPoint.y <= center {
+            tipPointY = tapPoint.y
+        } else {
+            tipPointY = tapPoint.y - size.height
+        }
+        tooltipView?.frame.origin = CGPoint(x: tipPointX, y: tipPointY)
+        tooltipView?.isHidden = false
+        tooltipView?.configure(with: models[section])
     }
 
     private func drawSections() {
@@ -112,14 +155,14 @@ class RadarChartView: UIView {
         for i in 1...models.count / 2 {
             let startAngle = CGFloat(i - 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1], arcCenter: arcCenterBelow, startAngle: startAngle, endAngle: endAngle)
+            drawSection(section: i - 1, model: models[i - 1], arcCenter: arcCenterBelow, startAngle: startAngle, endAngle: endAngle)
         }
 
         // sections above
         for i in 1...models.count / 2 {
             let startAngle = degree2angle(180) + CGFloat(i - 1) * (deltaAngle + marginAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, startAngle: startAngle, endAngle: endAngle)
+            drawSection(section: i - 1 + models.count / 2, model: models[i - 1 + models.count / 2], arcCenter: arcCenterAbove, startAngle: startAngle, endAngle: endAngle)
         }
 
         if borderEnabled {
@@ -136,7 +179,7 @@ class RadarChartView: UIView {
         for i in 1...models.count {
             let startAngle = marginAngle / 2 + CGFloat(i + 1) * (marginAngle + deltaAngle)
             let endAngle = startAngle + deltaAngle
-            drawSection(model: models[i - 1], arcCenter: arcCenter, startAngle: startAngle, endAngle: endAngle)
+            drawSection(section: i - 1, model: models[i - 1], arcCenter: arcCenter, startAngle: startAngle, endAngle: endAngle)
         }
 
         if borderEnabled {
@@ -144,7 +187,7 @@ class RadarChartView: UIView {
         }
     }
 
-    private func drawSection(model: RadarChartSectionModel, arcCenter: CGPoint, startAngle: CGFloat, endAngle: CGFloat) {
+    private func drawSection(section: Int, model: RadarChartSectionModel, arcCenter: CGPoint, startAngle: CGFloat, endAngle: CGFloat) {
 
         let icon = UIImageView(image: UIImage(named: model.iconName))
         icon.setImageColor(color:model.sectionColor)
@@ -160,6 +203,10 @@ class RadarChartView: UIView {
             icon.centerXAnchor.constraint(equalTo: leftAnchor, constant: iconCenter.x),
             icon.centerYAnchor.constraint(equalTo: topAnchor, constant: iconCenter.y)])
 
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapOnIcon(recognizer:)))
+        icon.tag = section
+        icon.isUserInteractionEnabled = true
+        icon.addGestureRecognizer(tapGesture)
 
         let maxRadius: CGFloat = iconRadius - iconLength * sqrt(2) / 3
         let minRadius: CGFloat = 25 * bounds.width / 375

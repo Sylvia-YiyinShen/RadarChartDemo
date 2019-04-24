@@ -20,19 +20,32 @@ class ViewController: UIViewController {
     }
 
     private func configureSmallRaderChart() {
-        smallRadarChartView.configure(with: smallRadarChartModels,
+        smallRadarChartView.configure(with: smallRadarChartModels2,
                                       sectionLayout: .even,
-                                      borderColor: UIColor.orange)
+                                      borderColor: UIColor.radarChartRed)
     }
 
     private var smallRadarChartModels: [RadarChartSectionModel] {
         return [
-            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_build"),
-            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_create"),
-            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_feedback"),
-            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_hourglass"),
-            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_pan"),
-            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_search")
+            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_build", sectionName: "Build"),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_create", sectionName: "Create"),
+            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_feedback", sectionName: "Feedback"),
+            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_hourglass", sectionName: "Hourglass"),
+            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_pan", sectionName: "Pan"),
+            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_search", sectionName: "Search")
+        ]
+    }
+
+    private var smallRadarChartModels2: [RadarChartSectionModel] {
+        return [
+            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_build", sectionName: "Build"),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.blue, iconName: "icon_create", sectionName: "Create"),
+            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.black, iconName: "icon_feedback", sectionName: "Feedback"),
+            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_hourglass", sectionName: "Hourglass"),
+            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_pan", sectionName: "Pan"),
+            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.blue, iconName: "icon_search", sectionName: "Search"),
+            RadarChartSectionModel(currentValue: 10, maximumValue: 10, sectionColor: UIColor.black, iconName: "icon_visibility", sectionName: "Visibility"),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_voice", sectionName: "Voice")
         ]
     }
 
@@ -45,14 +58,14 @@ class ViewController: UIViewController {
 
     private var radarChartModels: [RadarChartSectionModel] {
         return [
-            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_build"),
-            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_create"),
-            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_feedback"),
-            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_hourglass"),
-            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_pan"),
-            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_search"),
-            RadarChartSectionModel(currentValue: 10, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_visibility"),
-            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_voice")
+            RadarChartSectionModel(currentValue: 8, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_build", sectionName: "Build"),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_create", sectionName: "Create"),
+            RadarChartSectionModel(currentValue: 3, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_feedback", sectionName: "Feedback"),
+            RadarChartSectionModel(currentValue: 7, maximumValue: 10, sectionColor: UIColor.radarChartRed, iconName: "icon_hourglass", sectionName: "Hourglass"),
+            RadarChartSectionModel(currentValue: 4, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_pan", sectionName: "Pan"),
+            RadarChartSectionModel(currentValue: 6, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_search", sectionName: "Search"),
+            RadarChartSectionModel(currentValue: 10, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_visibility", sectionName: "Visibility"),
+            RadarChartSectionModel(currentValue: 5, maximumValue: 10, sectionColor: UIColor.orange, iconName: "icon_voice", sectionName: "Voice")
         ]
     }
 }

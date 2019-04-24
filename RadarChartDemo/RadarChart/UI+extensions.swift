@@ -26,3 +26,9 @@ extension UIImageView {
         tintColor = color
     }
 }
+
+extension UIView {
+    static func loadFromNib<T : UIView>() -> T? {
+        return UINib(nibName: String(describing: self), bundle: Bundle(for: self)).instantiate(withOwner: nil, options: nil).first as? T
+    }
+}

@@ -15,6 +15,8 @@
 		D9686BC6226FD46C00BCCEA9 /* RadarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */; };
 		D9686BC8226FD52E00BCCEA9 /* RadarChartSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */; };
 		D9686BCA226FECC000BCCEA9 /* UI+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BC9226FECC000BCCEA9 /* UI+extensions.swift */; };
+		D9686BCD2270331900BCCEA9 /* TooltipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9686BCC2270331900BCCEA9 /* TooltipView.swift */; };
+		D9686BD02270334700BCCEA9 /* TooltipView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9686BCF2270334700BCCEA9 /* TooltipView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartView.swift; sourceTree = "<group>"; };
 		D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadarChartSectionModel.swift; sourceTree = "<group>"; };
 		D9686BC9226FECC000BCCEA9 /* UI+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UI+extensions.swift"; sourceTree = "<group>"; };
+		D9686BCC2270331900BCCEA9 /* TooltipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipView.swift; sourceTree = "<group>"; };
+		D9686BCF2270334700BCCEA9 /* TooltipView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TooltipView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,11 +78,29 @@
 		D9686BC4226FD45C00BCCEA9 /* RadarChart */ = {
 			isa = PBXGroup;
 			children = (
+				D9686BCE2270331F00BCCEA9 /* Tooltip */,
+				D9686BCB227032F100BCCEA9 /* Model */,
 				D9686BC5226FD46C00BCCEA9 /* RadarChartView.swift */,
-				D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */,
 				D9686BC9226FECC000BCCEA9 /* UI+extensions.swift */,
 			);
 			path = RadarChart;
+			sourceTree = "<group>";
+		};
+		D9686BCB227032F100BCCEA9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D9686BC7226FD52E00BCCEA9 /* RadarChartSectionModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D9686BCE2270331F00BCCEA9 /* Tooltip */ = {
+			isa = PBXGroup;
+			children = (
+				D9686BCC2270331900BCCEA9 /* TooltipView.swift */,
+				D9686BCF2270334700BCCEA9 /* TooltipView.xib */,
+			);
+			path = Tooltip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +163,7 @@
 			files = (
 				D9686BBD226FD3F300BCCEA9 /* LaunchScreen.storyboard in Resources */,
 				D9686BBA226FD3F300BCCEA9 /* Assets.xcassets in Resources */,
+				D9686BD02270334700BCCEA9 /* TooltipView.xib in Resources */,
 				D9686BB8226FD3F100BCCEA9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +177,7 @@
 			files = (
 				D9686BB5226FD3F100BCCEA9 /* ViewController.swift in Sources */,
 				D9686BC8226FD52E00BCCEA9 /* RadarChartSectionModel.swift in Sources */,
+				D9686BCD2270331900BCCEA9 /* TooltipView.swift in Sources */,
 				D9686BCA226FECC000BCCEA9 /* UI+extensions.swift in Sources */,
 				D9686BC6226FD46C00BCCEA9 /* RadarChartView.swift in Sources */,
 				D9686BB3226FD3F100BCCEA9 /* AppDelegate.swift in Sources */,
