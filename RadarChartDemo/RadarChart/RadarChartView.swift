@@ -16,7 +16,7 @@ enum SectionLayout {
 
 class RadarChartView: UIView {
     var sectionGrayColor = UIColor(displayP3Red: 219 / 255, green: 221 / 255, blue: 220 / 255, alpha: 1.0).cgColor
-    var numOfSections = 8
+    var numOfSections = 10
     var marginAngle = 10 * CGFloat.pi / 180
     var verticalMargin: CGFloat = 6
     var sectionLayout: SectionLayout = .horizontalAlign
@@ -41,7 +41,7 @@ class RadarChartView: UIView {
     private func drawSectionsForHorizontalAlignLayout() {
         let arcCenterAbove = CGPoint(x: bounds.width / 2, y: bounds.height / 2 - verticalMargin / 2)
         let arcCenterBelow = CGPoint(x: bounds.width / 2, y: bounds.height / 2 + verticalMargin / 2)
-        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections - 2) * marginAngle)) / 8
+        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections - 2) * marginAngle)) / CGFloat(numOfSections)
         // sections below
         for i in 1...numOfSections / 2 {
             let startAngle = CGFloat(i - 1) * (marginAngle + deltaAngle)
@@ -59,7 +59,7 @@ class RadarChartView: UIView {
     }
 
     private func drawSectionsForEvenLayout() {
-        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections) * marginAngle)) / 8
+        let deltaAngle = (degree2angle(360) - (CGFloat(numOfSections) * marginAngle)) / CGFloat(numOfSections)
         let arcCenter = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
 
         for i in 1...numOfSections {
